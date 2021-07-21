@@ -3,7 +3,7 @@
 #getting the train set
 rm(list=ls())
 getwd()
-setwd("E:/Dropbox/Git/DataCleaningWeek4/UCI HAR Dataset/train")
+setwd("/Users/gillette/Dropbox/Coursera materials/Data cleaning/UCI HAR Dataset/train")
 list.files()
 filelisttrain = list.files(pattern = "*.txt")
 filelisttrain
@@ -23,7 +23,7 @@ tidydata
 
 #Getting the test set
 getwd()
-setwd("E:/Dropbox/Git/DataCleaningWeek4/UCI HAR Dataset/test")
+setwd("/Users/gillette/Dropbox/Coursera materials/Data cleaning/UCI HAR Dataset/test")
 test = list.files(pattern = "*.txt")
 test
 test = lapply(test, FUN=read.table)
@@ -37,9 +37,10 @@ colnames(data)<-c("type","subject", "Activity labels")
 tidydata2<-cbind(data, tidydata2)
 
 merged<-rbind(tidydata, tidydata2)
+merged
 
 #1. merging and assigning activity labels
-setwd("E:/Dropbox/Git/DataCleaningWeek4/UCI HAR Dataset")
+setwd("/Users/gillette/Dropbox/Coursera materials/Data cleaning/UCI HAR Dataset")
 a<-read.table("activity_labels.txt")
 colnames(a)<-c("Activity labels", "description")
 a
@@ -60,22 +61,23 @@ colnames(merged)<-names
 means<-grep('mean', names(merged))#Mean values
 means<-merged[,means]
 stds<-grep('std', names(merged))#STD values
-stds
-stds<-merged[,means]
+stds<-merged[,stds]
 merged[,1:3]
 data<-cbind(merged[,1:3], means, stds)#merged data
+data
 
 #4. Making labels for the data
 library(tidyverse)
 data[,1:3]
-?tidyr::unite
 label<-tidyr::unite(data[,1:3], label, sep = "_")
 newdata<-cbind(label,data[,4:length(colnames(data))])
-
+newdata
 
 #5. making new data.
 newdata<-data.frame(newdata)
-newdata
 finaldata<-aggregate(newdata[, 2:length(colnames(newdata))], 
                      list(newdata$label), mean)
+
+write.table(finaldata, file = "data.txt", sep = "\t", row.names = T, col.names = T)
+list.files()
 #Assignment compete
