@@ -76,4 +76,6 @@ newdata<-cbind(label,data[,4:length(colnames(data))])
 #5. making new data.
 newdata<-data.frame(newdata)
 newdata
-finaldata<-aggregate(newdata[, 2:length(colnames(newdata))], list(newdata$label), mean)
+finaldata<-aggregate(newdata[, 2:length(colnames(newdata))], 
+                     list(newdata$label), mean)
+#Assignment compete
